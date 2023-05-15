@@ -1,0 +1,27 @@
+[metadata]
+name = interpylate
+version = 1.0.0
+author = Dorian Bichet
+author_email = dbichet@insa-toulouse.fr
+description = A package for N-linear regular grid interpolation
+long_description = file: README.md
+long_description_content_type = text/markdown
+url = https://github.com/Dorian210/interpylate
+project_urls =
+    Bug Tracker = https://github.com/Dorian210/interpylate/issues
+classifiers =
+    Programming Language :: Python :: 3
+    License :: OSI Approved :: CeCILL FREE SOFTWARE LICENSE AGREEMENT
+    Operating System :: OS Independent
+
+[options]
+package_dir =
+    = interpylate
+packages = find:
+python_requires = >=3.6
+install_requires =
+    numpy
+    numba
+
+[options.packages.find]
+where = interpylate

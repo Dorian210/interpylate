@@ -15,13 +15,5 @@ classifiers =
     Operating System :: OS Independent
 
 [options]
-package_dir =
-    = interpylate
 packages = find:
 python_requires = >=3.6
-install_requires =
-    numpy
-    numba
-
-[options.packages.find]
-where = interpylate

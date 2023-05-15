@@ -11,9 +11,11 @@ project_urls =
     Bug Tracker = https://github.com/Dorian210/interpylate/issues
 classifiers =
     Programming Language :: Python :: 3
-    License :: OSI Approved :: CeCILL FREE SOFTWARE LICENSE AGREEMENT
+    License :: OSI Approved :: CeCILL License
     Operating System :: OS Independent
 
 [options]
 packages = find:
-python_requires = >=3.6
+install_requires = 
+    numpy >= 1.23.5
+    numba >= 0.56.4

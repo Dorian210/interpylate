@@ -1,7 +1,7 @@
-from . import LinearRegularGridInterpolator
-from . import BiLinearRegularGridInterpolator
-from . import TriLinearRegularGridInterpolator
-from . import NLinearRegularGridInterpolatorLarge
+from .LinearRegularGridInterpolator import LinearRegularGridInterpolator
+from .BiLinearRegularGridInterpolator import BiLinearRegularGridInterpolator
+from .TriLinearRegularGridInterpolator import TriLinearRegularGridInterpolator
+from .NLinearRegularGridInterpolatorLarge import NLinearRegularGridInterpolatorLarge
 
 class NLinearRegularGridInterpolator:
     """

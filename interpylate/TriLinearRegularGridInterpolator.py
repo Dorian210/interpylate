@@ -71,7 +71,7 @@ class TriLinearRegularGridInterpolator:
 
         Returns
         -------
-        numpy.ndarray of float
+        evaluated : numpy.ndarray of float
             Interpolated values at the coordinates given.
             If ``continuous_inds`` is of shape (3, n), the output will be of shape (n,).
         """
@@ -96,7 +96,7 @@ class TriLinearRegularGridInterpolator:
 
         Returns
         -------
-        list of numpy.ndarray of float
+        [grad_x, grad_y, grad_z] : list of numpy.ndarray of float
             The derivative of the interpolated array in each axis's direction.
             If ``continuous_inds`` is of shape (3, n), each of the output will be of shape (n,).
         """
@@ -128,7 +128,7 @@ class TriLinearRegularGridInterpolator:
 
         Returns
         -------
-        list of numpy.ndarray of float
+        [hess_xy, hess_xz, hess_yz] : list of numpy.ndarray of float
             The second order derivatives of the interpolated array in each axis couple's direction.
             If ``continuous_inds`` is of shape (3, n), each of the output will be of shape (n,).
         """

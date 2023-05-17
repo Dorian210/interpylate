@@ -63,7 +63,7 @@ class BiLinearRegularGridInterpolator:
 
         Returns
         -------
-        numpy.ndarray of float
+        evaluated : numpy.ndarray of float
             Interpolated values at the coordinates given.
             If ``continuous_inds`` is of shape (2, n), the output will be of shape (n,).
         """
@@ -88,7 +88,7 @@ class BiLinearRegularGridInterpolator:
 
         Returns
         -------
-        list of numpy.ndarray of float
+        [grad_x, grad_y] : list of numpy.ndarray of float
             The derivative of the interpolated array in each axis's direction.
             If ``continuous_inds`` is of shape (2, n), each of the output will be of shape (n,).
         """
@@ -119,7 +119,7 @@ class BiLinearRegularGridInterpolator:
 
         Returns
         -------
-        list of numpy.ndarray of float
+        [hess_xy] : list of numpy.ndarray of float
             The second order derivatives of the interpolated array in each axis couple's direction.
             If ``continuous_inds`` is of shape (2, n), each of the output will be of shape (n,).
         """

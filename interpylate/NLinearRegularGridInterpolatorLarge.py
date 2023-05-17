@@ -82,7 +82,7 @@ class NLinearRegularGridInterpolatorLarge:
 
         Returns
         -------
-        numpy.ndarray of float
+        evaluated : numpy.ndarray of float
             Interpolated values at the coordinates given.
             If ``continuous_inds`` is of shape (dim, n), the output will be of shape (n,).
         """
@@ -114,7 +114,7 @@ class NLinearRegularGridInterpolatorLarge:
 
         Returns
         -------
-        list of numpy.ndarray of float
+        grad : list of numpy.ndarray of float
             The derivative of the interpolated array in each axis's direction.
             If ``continuous_inds`` is of shape (dim, n), each of the output will be of shape (n,).
         """
@@ -149,7 +149,7 @@ class NLinearRegularGridInterpolatorLarge:
 
         Returns
         -------
-        list of numpy.ndarray of float
+        hess : list of numpy.ndarray of float
             The second order derivatives of the interpolated array in each axis couple's direction.
             If ``continuous_inds`` is of shape (dim, n), each of the output will be of shape (n,).
         """
@@ -172,7 +172,7 @@ class NLinearRegularGridInterpolatorLarge:
                 evaluated = _evaluate(coords, self.masks, coefs)
                 return hess, grad, evaluated
             return hess, grad
-        return hess # (d2interp_dxy, d2interp_dxz, d2interp_dyz)
+        return hess
 
 @njit(cache=True)
 def _evaluate(coords, masks, coefs):

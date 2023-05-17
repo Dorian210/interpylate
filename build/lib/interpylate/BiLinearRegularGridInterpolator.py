@@ -1,4 +1,4 @@
-import numpy as np
+import warnings
 
 class BiLinearRegularGridInterpolator:
     """
@@ -29,17 +29,24 @@ class BiLinearRegularGridInterpolator:
 
     def _get_inds_coords_axis(self, continuous_inds_axis, axis_size):
         inds = continuous_inds_axis.astype('int')
-        inds[inds<0] = 0
+        mask_negative = inds<0
+        inds[mask_negative] = 0
         max_ind = axis_size - 2
-        inds[inds>max_ind] = max_ind
+        mask_too_large = inds>max_ind
+        inds[mask_too_large] = max_ind
+        outside_axis = mask_negative.any() or mask_too_large.any()
         coords = continuous_inds_axis - inds
-        return (inds, coords)
+        return (inds, coords, outside_axis)
 
     def _get_inds_coords(self, shape, continuous_inds):
         inds = [None]*2
         coords = [None]*2
+        outside = False
         for axis in range(2):
-            (inds[axis], coords[axis]) = self._get_inds_coords_axis(continuous_inds[axis], shape[axis])
+            (inds[axis], coords[axis], outside_axis) = self._get_inds_coords_axis(continuous_inds[axis], shape[axis])
+            outside = outside_axis or outside
+        if outside:
+            warnings.warn("Interpolate outside of the array !")
         return (inds, coords)
 
     def evaluate(self, image, continuous_inds):

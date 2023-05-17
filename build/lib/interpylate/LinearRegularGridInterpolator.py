@@ -1,4 +1,4 @@
-import numpy as np
+import warnings
 
 class LinearRegularGridInterpolator:
     """
@@ -25,9 +25,13 @@ class LinearRegularGridInterpolator:
 
     def _get_inds_coords(self, continuous_inds, size):
         inds = continuous_inds.astype('int')
-        inds[inds<0] = 0
+        mask_negative = inds<0
+        inds[mask_negative] = 0
         max_ind = size - 2
-        inds[inds>max_ind] = max_ind
+        mask_too_large = inds>max_ind
+        inds[mask_too_large] = max_ind
+        if mask_negative.any() or mask_too_large.any():
+            warnings.warn("Interpolate outside of the array !")
         coords = continuous_inds - inds
         return (inds, coords)
 

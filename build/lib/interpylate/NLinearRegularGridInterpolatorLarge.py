@@ -1,5 +1,6 @@
 import numpy as np
 from numba import njit
+import warnings
 
 class NLinearRegularGridInterpolatorLarge:
     """
@@ -54,10 +55,16 @@ class NLinearRegularGridInterpolatorLarge:
     
     def _get_inds_coords(self, shape, continuous_inds):
         inds = continuous_inds.astype('int')
-        inds[inds<0] = 0
+        mask_negative = inds<0
+        inds[mask_negative] = 0
+        outside = mask_negative.any()
         for axis in range(self.dim):
             max_size = shape[axis] - 2
-            inds[axis, inds[axis]>max_size] = max_size
+            mask_too_large = inds[axis]>max_size
+            inds[axis, mask_too_large] = max_size
+            outside = outside or mask_too_large.any()
+        if outside:
+            warnings.warn("Interpolate outside of the array !")
         coords = continuous_inds - inds
         return inds, coords
     

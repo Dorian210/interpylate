@@ -49,11 +49,11 @@ class LinearRegularGridInterpolator:
 
         Returns
         -------
-        numpy.ndarray of float
+        evaluated : numpy.ndarray of float
             Interpolated values at the coordinates given.
             If ``continuous_inds`` is of shape (n,), the output will be of shape (n,).
         """
-        (i, x) = self._get_inds_coords(vector.size, continuous_inds)
+        (i, x) = self._get_inds_coords(continuous_inds, vector.size)
         [a, b] = self._make_coefs(vector, i)
         evaluated = (a + b*x)
         return evaluated
@@ -74,11 +74,11 @@ class LinearRegularGridInterpolator:
 
         Returns
         -------
-        list of numpy.ndarray of float
+        [grad_x] : list of numpy.ndarray of float
             The derivative of the interpolated array in each axis's direction.
             If ``continuous_inds`` is of shape (n,), each of the output will be of shape (n,).
         """
-        (i, x) = self._get_inds_coords(vector.size, continuous_inds)
+        (i, x) = self._get_inds_coords(continuous_inds, vector.size)
         [a, b] = self._make_coefs(vector, i)
         grad_x = (b)
         if evaluate_too:
@@ -104,7 +104,7 @@ class LinearRegularGridInterpolator:
 
         Returns
         -------
-        list of numpy.ndarray of float
+        [] : list of numpy.ndarray of float
             The second order derivatives of the interpolated array in each axis couple's direction.
             If ``continuous_inds`` is of shape (n,), each of the output will be of shape (n,).
         """

@@ -23,6 +23,19 @@
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
 
+            <h2>Contents</h2>
+            <ul>
+  <li><a href="#interpylate">interpylate</a></li>
+</ul></li>
+<li><a href="#installation">Installation</a>
+<ul>
+  <li><a href="#usage">Usage</a></li>
+  <li><a href="#documentation">Documentation</a></li>
+  <li><a href="#examples">Examples</a></li>
+  <li><a href="#contributing">Contributing</a></li>
+  <li><a href="#license">License</a></li>
+</ul>
+
 
             <h2>Submodules</h2>
             <ul>
@@ -47,12 +60,65 @@
                     <h1 class="modulename">
 interpylate    </h1>
 
-                
+                        <div class="docstring"><hr />
+
+<h2 id="interpylate">interpylate</h2>
+
+<p>interpylate is a Python library for N-linear regular grid interpolation. It provides a flexible and efficient method to interpolate N-dimensional arrays using a N-linear approach.</p>
+
+<p>It can be useful for image interpolation and its 3D (or more) equivalent.</p>
+
+<h1 id="installation">Installation</h1>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>interpylate
+</code></pre>
+</div>
+
+<h1 id="usage">Usage</h1>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">from</span> <span class="nn">interpylate</span> <span class="kn">import</span> <span class="n">NLinearRegularGridInterpolator</span>
+
+<span class="c1"># Create an instance of the interpolator</span>
+<span class="n">interpolator</span> <span class="o">=</span> <span class="n">NLinearRegularGridInterpolator</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+
+<span class="c1"># Evaluate the interpolation at specified coordinates</span>
+<span class="n">interpolated_values</span> <span class="o">=</span> <span class="n">interpolator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">NDarray</span><span class="p">,</span> <span class="n">continuous_inds</span><span class="p">)</span>
+
+<span class="c1"># Compute the gradient of the interpolated array</span>
+<span class="n">gradient</span> <span class="o">=</span> <span class="n">interpolator</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">NDarray</span><span class="p">,</span> <span class="n">continuous_inds</span><span class="p">,</span> <span class="n">evaluate_too</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Compute the hessian of the interpolated array</span>
+<span class="n">hessian</span> <span class="o">=</span> <span class="n">interpolator</span><span class="o">.</span><span class="n">hess</span><span class="p">(</span><span class="n">NDarray</span><span class="p">,</span> <span class="n">continuous_inds</span><span class="p">,</span> <span class="n">grad_too</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">evaluate_too</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h1 id="documentation">Documentation</h1>
+
+<p>For detailed documentation, please refer to the interpylate <a href="https://interpylate-docs.example.com">documentation</a>.</p>
+
+<h1 id="examples">Examples</h1>
+
+<p>You can find usage examples in the <a href="https://github.com/Dorian210/interpylate/tree/main/examples">examples</a> directory of the interpylate GitHub repository.</p>
+
+<h1 id="contributing">Contributing</h1>
+
+<p>Contributions to interpylate are welcome! If you have any bug reports, feature requests, or want to contribute code, please visit the <a href="https://github.com/Dorian210/interpylate">GitHub repository</a>.</p>
+
+<h1 id="license">License</h1>
+
+<p>interpylate is licensed under the CeCILL License. See <a href="https://github.com/Dorian210/interpylate/tree/main/LICENSE">LICENSE</a> for more information.</p>
+</div>
+
                         <input id="mod-interpylate-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
                         <label class="view-source-button" for="mod-interpylate-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="kn">from</span> <span class="nn">.NLinearRegularGridInterpolator</span> <span class="kn">import</span> <span class="o">*</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a><span class="sd">.. include:: ../README.md</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a><span class="kn">from</span> <span class="nn">.NLinearRegularGridInterpolator</span> <span class="kn">import</span> <span class="o">*</span>
 </span></pre></div>
 
 

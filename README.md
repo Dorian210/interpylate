@@ -32,7 +32,7 @@ hessian = interpolator.hess(NDarray, continuous_inds, grad_too=False, evaluate_t
 
 # Documentation
 
-For detailed documentation, please refer to the interpylate [documentation](https://interpylate-docs.example.com).
+For detailed documentation, please refer to the interpylate [documentation](https://dorian210.github.io/interpylate/interpylate.html).
 
 # Examples
 

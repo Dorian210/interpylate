@@ -5,7 +5,7 @@ with open('README.md', 'r') as readme:
 
 setup(
     name='interpylate', 
-    version='0.0.1', 
+    version='1.0.0', 
     url='https://github.com/Dorian210/interpylate', 
     author='Dorian Bichet', 
     author_email='dbichet@insa-toulouse.fr', 

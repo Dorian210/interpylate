@@ -12,7 +12,7 @@ dataset = y
 interpolator = NLinearRegularGridInterpolator(1)
 
 # Compute the interpolation and its gradient at specified continuous indices
-continuous_inds = np.linspace(0, dataset.shape[0] - 1, 50, endpoint=False)
+continuous_inds = np.linspace(0, dataset.shape[0] - 1, 1000, endpoint=False)
 evaluated = interpolator.evaluate(dataset, continuous_inds)
 gradient, = interpolator.grad(dataset, continuous_inds)
 

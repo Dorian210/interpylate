@@ -28,6 +28,9 @@ class LinearRegularGridInterpolator:
         np.clip(inds, a_min=0, a_max=(axis_size - 2), out=inds)
         coords = continuous_inds_axis - inds
         return inds, coords
+    
+    def _get_inds_coords(self, shape, continuous_inds):
+        return self._get_inds_coords_axis(continuous_inds, shape)
 
     def evaluate(self, vector, continuous_inds):
         """
@@ -47,7 +50,7 @@ class LinearRegularGridInterpolator:
             Interpolated values at the coordinates given.
             If ``continuous_inds`` is of shape (n,), the output will be of shape (n,).
         """
-        (i, x) = self._get_inds_coords(continuous_inds, vector.size)
+        (i, x) = self._get_inds_coords(vector.size, continuous_inds)
         [a, b] = self._make_coefs(vector, i)
         evaluated = (a + b*x)
         return evaluated
@@ -72,7 +75,7 @@ class LinearRegularGridInterpolator:
             The derivative of the interpolated array in each axis's direction.
             If ``continuous_inds`` is of shape (n,), each of the output will be of shape (n,).
         """
-        (i, x) = self._get_inds_coords(continuous_inds, vector.size)
+        (i, x) = self._get_inds_coords(vector.size, continuous_inds)
         [a, b] = self._make_coefs(vector, i)
         grad_x = (b)
         if evaluate_too:

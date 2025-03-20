@@ -14,10 +14,10 @@ dataset = Z
 interpolator = NLinearRegularGridInterpolator(2)
 
 # Define the continuous indices for interpolation
-x_new = np.linspace(0, dataset.shape[0] - 1, 50, endpoint=False)
-y_new = np.linspace(0, dataset.shape[1] - 1, 50, endpoint=False)
+x_new = np.linspace(0, dataset.shape[0] - 1, 500, endpoint=False)
+y_new = np.linspace(0, dataset.shape[1] - 1, 500, endpoint=False)
 X_new, Y_new = np.meshgrid(x_new, y_new)
-continuous_inds = np.array([X_new.flatten(), Y_new.flatten()])
+continuous_inds = np.stack((X_new.flat, Y_new.flat))
 
 # Compute the interpolation, its gradient, and its hessian at specified continuous indices
 evaluated = interpolator.evaluate(dataset, continuous_inds)

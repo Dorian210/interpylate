@@ -1,4 +1,4 @@
-import warnings
+import numpy as np
 
 class BiLinearRegularGridInterpolator:
     """
@@ -13,10 +13,10 @@ class BiLinearRegularGridInterpolator:
     
     def _get_corners(self, image, i, j):
         i0, j0, i1, j1 = i, j, i + 1, j + 1
-        l = image[i0, j0]
-        m = image[i1, j0]
-        n = image[i0, j1]
-        o = image[i1, j1]
+        l = image[i0, j0].astype('float')
+        m = image[i1, j0].astype('float')
+        n = image[i0, j1].astype('float')
+        o = image[i1, j1].astype('float')
         return (l, m, n, o)
 
     def _make_coefs(self, image, i, j):
@@ -29,25 +29,16 @@ class BiLinearRegularGridInterpolator:
 
     def _get_inds_coords_axis(self, continuous_inds_axis, axis_size):
         inds = continuous_inds_axis.astype('int')
-        mask_negative = inds<0
-        inds[mask_negative] = 0
-        max_ind = axis_size - 2
-        mask_too_large = inds>max_ind
-        inds[mask_too_large] = max_ind
-        outside_axis = mask_negative.any() or mask_too_large.any()
+        np.clip(inds, a_min=0, a_max=(axis_size - 2), out=inds)
         coords = continuous_inds_axis - inds
-        return (inds, coords, outside_axis)
+        return inds, coords
 
     def _get_inds_coords(self, shape, continuous_inds):
-        inds = [None]*2
-        coords = [None]*2
-        outside = False
+        inds = np.empty(continuous_inds.shape, dtype='int')
+        coords = np.empty(continuous_inds.shape, dtype='float')
         for axis in range(2):
-            (inds[axis], coords[axis], outside_axis) = self._get_inds_coords_axis(continuous_inds[axis], shape[axis])
-            outside = outside_axis or outside
-        if outside:
-            warnings.warn("Interpolate outside of the array !")
-        return (inds, coords)
+            inds[axis], coords[axis] = self._get_inds_coords_axis(continuous_inds[axis], shape[axis])
+        return inds, coords
 
     def evaluate(self, image, continuous_inds):
         """

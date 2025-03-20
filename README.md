@@ -1,24 +1,42 @@
----
-interpylate
----
+# interpylate
 
-interpylate is a Python library for N-linear regular grid interpolation. It provides a flexible and efficient method to interpolate N-dimensional arrays using a N-linear approach.
+<p align="center">
+  <img src="docs/logo.png" width="500" />
+</p>
 
-It can be useful for image interpolation and its 3D (or more) equivalent.
+**interpylate** is a Python library for N-linear regular grid interpolation. It provides a flexible and efficient method to interpolate N-dimensional arrays using a N-linear approach, making it particularly useful for image interpolation and its higher-dimensional equivalents.
 
-# Installation
+## Installation
 
-``` bash
+```bash
 pip install interpylate
 ```
 
-# Usage
+## Dependencies
 
-``` python
+- `numpy`: Core dependency for array operations
+
+## Architecture
+
+The library is structured with a unified interface and specialized implementations:
+
+- `NLinearRegularGridInterpolator`: A unified interface that automatically selects the appropriate dimension-specific implementation based on the input dimension
+  - For dimensions > 3, it utilizes `NLinearRegularGridInterpolatorLarge`
+- `LinearRegularGridInterpolator`: Optimized for 1D arrays
+- `BiLinearRegularGridInterpolator`: Optimized for 2D arrays (images)
+- `TriLinearRegularGridInterpolator`: Optimized for 3D arrays (volumes)
+- `NLinearRegularGridInterpolatorLarge`: Less optimized general implementation for any dimensions
+
+This design provides both optimization for common cases and flexibility for higher dimensions.
+
+## Usage
+
+```python
 from interpylate import NLinearRegularGridInterpolator
 
 # Create an instance of the interpolator
-interpolator = NLinearRegularGridInterpolator(dim)
+# This will automatically select the appropriate implementation based on dimension
+interpolator = NLinearRegularGridInterpolator(dim=3)
 
 # Evaluate the interpolation at specified coordinates
 interpolated_values = interpolator.evaluate(NDarray, continuous_inds)
@@ -30,18 +48,31 @@ gradient = interpolator.grad(NDarray, continuous_inds, evaluate_too=False)
 hessian = interpolator.hess(NDarray, continuous_inds, grad_too=False, evaluate_too=False)
 ```
 
-# Documentation
+## Main Features
 
-For detailed documentation, please refer to the interpylate [documentation](https://dorian210.github.io/interpylate/interpylate.html).
+- **Dimension-agnostic API**: Work with arrays of any dimension using a consistent interface
+- **Performance-optimized implementations**: Specialized algorithms for 1D, 2D, and 3D cases
+- **Gradient computation**: Calculate first-order derivatives of interpolated arrays
+- **Hessian computation**: Compute second-order derivatives for advanced analysis
+- **Regular grid support**: Designed specifically for regular grid structures
 
-# Examples
+## Examples
 
-You can find usage examples in the [examples](https://github.com/Dorian210/interpylate/tree/main/examples) directory of the interpylate GitHub repository.
+The interpylate GitHub repository includes several example scripts demonstrating the library's capabilities:
 
-# Contributing
+- **1D Interpolation**: Basic interpolation for one-dimensional arrays
+- **2D Interpolation**: Image interpolation techniques
+- **3D Interpolation**: Volume data interpolation methods
+- **Speed Contest**: Performance comparison between interpylate's TriLinearRegularGridInterpolator and scipy.interpolate.RegularGridInterpolator
 
-Contributions to interpylate are welcome! If you have any bug reports, feature requests, or want to contribute code, please visit the [GitHub repository](https://github.com/Dorian210/interpylate).
+## Documentation
 
-# License
+The full API documentation is available in the docs/ directory of the project or via the [online documentation portal](https://dorian210.github.io/interpylate/).
 
-interpylate is licensed under the CeCILL License. See [LICENSE](https://github.com/Dorian210/interpylate/tree/main/LICENSE) for more information.
+## Contributing
+
+At the moment, I am not actively reviewing contributions. However, if you encounter issues or have suggestions, feel free to open an issue.
+
+## License
+
+This project is licensed under the [CeCILL License](LICENSE.txt).

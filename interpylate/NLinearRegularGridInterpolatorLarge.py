@@ -45,7 +45,7 @@ class NLinearRegularGridInterpolatorLarge:
     
     def _get_corners(self, NDarray, inds):
         corners_inds = self._make_corners_inds(inds)
-        corners = NDarray[tuple(corners_inds)]
+        corners = NDarray[tuple(corners_inds)].astype('float')
         return corners
     
     def _make_coefs(self, NDarray, inds):
@@ -66,6 +66,19 @@ class NLinearRegularGridInterpolatorLarge:
         if outside:
             warnings.warn("Interpolate outside of the array !")
         coords = continuous_inds - inds
+        return inds, coords
+
+    def _get_inds_coords_axis(self, continuous_inds_axis, axis_size):
+        inds = continuous_inds_axis.astype('int')
+        np.clip(inds, a_min=0, a_max=(axis_size - 2), out=inds)
+        coords = continuous_inds_axis - inds
+        return inds, coords
+
+    def _get_inds_coords(self, shape, continuous_inds):
+        inds = np.empty(continuous_inds.shape, dtype='int')
+        coords = np.empty(continuous_inds.shape, dtype='float')
+        for axis in range(self.dim):
+            inds[axis], coords[axis] = self._get_inds_coords_axis(continuous_inds[axis], shape[axis])
         return inds, coords
     
     def evaluate(self, NDarray, continuous_inds):

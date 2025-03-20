@@ -1,4 +1,4 @@
-import warnings
+import numpy as np
 
 class TriLinearRegularGridInterpolator:
     """
@@ -13,14 +13,14 @@ class TriLinearRegularGridInterpolator:
     
     def _get_corners(self, volume, i, j, k):
         i0, j0, k0, i1, j1, k1 = i, j, k, i + 1, j + 1, k + 1
-        l = volume[i0, j0, k0]
-        m = volume[i1, j0, k0]
-        n = volume[i0, j1, k0]
-        o = volume[i0, j0, k1]
-        p = volume[i1, j1, k0]
-        q = volume[i1, j0, k1]
-        r = volume[i0, j1, k1]
-        s = volume[i1, j1, k1]
+        l = volume[i0, j0, k0].astype('float')
+        m = volume[i1, j0, k0].astype('float')
+        n = volume[i0, j1, k0].astype('float')
+        o = volume[i0, j0, k1].astype('float')
+        p = volume[i1, j1, k0].astype('float')
+        q = volume[i1, j0, k1].astype('float')
+        r = volume[i0, j1, k1].astype('float')
+        s = volume[i1, j1, k1].astype('float')
         return (l, m, n, o, p, q, r, s)
 
     def _make_coefs(self, volume, i, j, k):
@@ -37,25 +37,16 @@ class TriLinearRegularGridInterpolator:
 
     def _get_inds_coords_axis(self, continuous_inds_axis, axis_size):
         inds = continuous_inds_axis.astype('int')
-        mask_negative = inds<0
-        inds[mask_negative] = 0
-        max_ind = axis_size - 2
-        mask_too_large = inds>max_ind
-        inds[mask_too_large] = max_ind
-        outside_axis = mask_negative.any() or mask_too_large.any()
+        np.clip(inds, a_min=0, a_max=(axis_size - 2), out=inds)
         coords = continuous_inds_axis - inds
-        return (inds, coords, outside_axis)
+        return inds, coords
 
     def _get_inds_coords(self, shape, continuous_inds):
-        inds = [None]*3
-        coords = [None]*3
-        outside = False
+        inds = np.empty(continuous_inds.shape, dtype='int')
+        coords = np.empty(continuous_inds.shape, dtype='float')
         for axis in range(3):
-            (inds[axis], coords[axis], outside_axis) = self._get_inds_coords_axis(continuous_inds[axis], shape[axis])
-            outside = outside_axis or outside
-        if outside:
-            warnings.warn("Interpolate outside of the array !")
-        return (inds, coords)
+            inds[axis], coords[axis] = self._get_inds_coords_axis(continuous_inds[axis], shape[axis])
+        return inds, coords
 
     def evaluate(self, volume, continuous_inds):
         """

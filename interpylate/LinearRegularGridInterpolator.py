@@ -1,4 +1,4 @@
-import warnings
+import numpy as np
 
 class LinearRegularGridInterpolator:
     """
@@ -13,8 +13,8 @@ class LinearRegularGridInterpolator:
     
     def _get_corners(self, vector, i):
         i0, i1 = i, i + 1
-        l = vector[i0]
-        m = vector[i1]
+        l = vector[i0].astype('float')
+        m = vector[i1].astype('float')
         return (l, m)
 
     def _make_coefs(self, vector, i):
@@ -23,17 +23,11 @@ class LinearRegularGridInterpolator:
         b = m - a
         return [a, b]
 
-    def _get_inds_coords(self, continuous_inds, size):
-        inds = continuous_inds.astype('int')
-        mask_negative = inds<0
-        inds[mask_negative] = 0
-        max_ind = size - 2
-        mask_too_large = inds>max_ind
-        inds[mask_too_large] = max_ind
-        if mask_negative.any() or mask_too_large.any():
-            warnings.warn("Interpolate outside of the array !")
-        coords = continuous_inds - inds
-        return (inds, coords)
+    def _get_inds_coords_axis(self, continuous_inds_axis, axis_size):
+        inds = continuous_inds_axis.astype('int')
+        np.clip(inds, a_min=0, a_max=(axis_size - 2), out=inds)
+        coords = continuous_inds_axis - inds
+        return inds, coords
 
     def evaluate(self, vector, continuous_inds):
         """

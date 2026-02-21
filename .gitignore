@@ -1,5 +1,40 @@
-.qodo
-interpylate.egg-info
-build
-dist
-__pycache__
+# Python
+__pycache__/
+*.py[cod]
+
+# Numba
+*.nbc
+*.nbi
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# Pytest
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+.env/
+tmp/
+.test/
+
+# IDE
+.vscode/
+.idea/
+
+# Generated files (examples)
+*.vtu
+*.pvd
+*.stl
+*.pkl
+*.npy
+*.tiff
+
+# OS
+.DS_Store
+
+# Personnal
+context.txt

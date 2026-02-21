@@ -1,26 +1,28 @@
 import numpy as np
 
+
 class TriLinearRegularGridInterpolator:
     """
     Tri-linear grid interpolator : interpolate a 3D array between the indices using a tri-linear method :
     F(x, y, z) = a + bx + cy + dz + exy + fxz + gyz + hxyz
     """
+
     def __init__(self):
         """
         Create the interpolator.
         """
         pass
-    
+
     def _get_corners(self, volume, i, j, k):
         i0, j0, k0, i1, j1, k1 = i, j, k, i + 1, j + 1, k + 1
-        l = volume[i0, j0, k0].astype('float')
-        m = volume[i1, j0, k0].astype('float')
-        n = volume[i0, j1, k0].astype('float')
-        o = volume[i0, j0, k1].astype('float')
-        p = volume[i1, j1, k0].astype('float')
-        q = volume[i1, j0, k1].astype('float')
-        r = volume[i0, j1, k1].astype('float')
-        s = volume[i1, j1, k1].astype('float')
+        l = volume[i0, j0, k0].astype("float")
+        m = volume[i1, j0, k0].astype("float")
+        n = volume[i0, j1, k0].astype("float")
+        o = volume[i0, j0, k1].astype("float")
+        p = volume[i1, j1, k0].astype("float")
+        q = volume[i1, j0, k1].astype("float")
+        r = volume[i0, j1, k1].astype("float")
+        s = volume[i1, j1, k1].astype("float")
         return (l, m, n, o, p, q, r, s)
 
     def _make_coefs(self, volume, i, j, k):
@@ -36,16 +38,18 @@ class TriLinearRegularGridInterpolator:
         return [a, b, c, d, e, f, g, h]
 
     def _get_inds_coords_axis(self, continuous_inds_axis, axis_size):
-        inds = continuous_inds_axis.astype('int')
+        inds = continuous_inds_axis.astype("int")
         np.clip(inds, a_min=0, a_max=(axis_size - 2), out=inds)
         coords = continuous_inds_axis - inds
         return inds, coords
 
     def _get_inds_coords(self, shape, continuous_inds):
-        inds = np.empty(continuous_inds.shape, dtype='int')
-        coords = np.empty(continuous_inds.shape, dtype='float')
+        inds = np.empty(continuous_inds.shape, dtype="int")
+        coords = np.empty(continuous_inds.shape, dtype="float")
         for axis in range(3):
-            inds[axis], coords[axis] = self._get_inds_coords_axis(continuous_inds[axis], shape[axis])
+            inds[axis], coords[axis] = self._get_inds_coords_axis(
+                continuous_inds[axis], shape[axis]
+            )
         return inds, coords
 
     def evaluate(self, volume, continuous_inds):
@@ -68,7 +72,16 @@ class TriLinearRegularGridInterpolator:
         """
         ([i, j, k], [x, y, z]) = self._get_inds_coords(volume.shape, continuous_inds)
         [a, b, c, d, e, f, g, h] = self._make_coefs(volume, i, j, k)
-        evaluated = (a + b*x +c*y + d*z + e*x*y + f*x*z + g*y*z + h*x*y*z)
+        evaluated = (
+            a
+            + b * x
+            + c * y
+            + d * z
+            + e * x * y
+            + f * x * z
+            + g * y * z
+            + h * x * y * z
+        )
         return evaluated
 
     def grad(self, volume, continuous_inds, evaluate_too=False):
@@ -93,11 +106,20 @@ class TriLinearRegularGridInterpolator:
         """
         ([i, j, k], [x, y, z]) = self._get_inds_coords(volume.shape, continuous_inds)
         [a, b, c, d, e, f, g, h] = self._make_coefs(volume, i, j, k)
-        grad_x = (b + e*y + f*z + h*y*z)
-        grad_y = (c + e*x + g*z + h*x*z)
-        grad_z = (d + f*x + g*y + h*x*y)
+        grad_x = b + e * y + f * z + h * y * z
+        grad_y = c + e * x + g * z + h * x * z
+        grad_z = d + f * x + g * y + h * x * y
         if evaluate_too:
-            evaluated = (a + b*x +c*y + d*z + e*x*y + f*x*z + g*y*z + h*x*y*z)
+            evaluated = (
+                a
+                + b * x
+                + c * y
+                + d * z
+                + e * x * y
+                + f * x * z
+                + g * y * z
+                + h * x * y * z
+            )
             return [grad_x, grad_y, grad_z], evaluated
         return [grad_x, grad_y, grad_z]
 
@@ -123,17 +145,26 @@ class TriLinearRegularGridInterpolator:
             The second order derivatives of the interpolated array in each axis couple's direction.
             If ``continuous_inds`` is of shape (3, n), each of the output will be of shape (n,).
         """
-        ([i, j, k], [x, y, z]) =self._get_inds_coords(volume.shape, continuous_inds)
+        ([i, j, k], [x, y, z]) = self._get_inds_coords(volume.shape, continuous_inds)
         [a, b, c, d, e, f, g, h] = self._make_coefs(volume, i, j, k)
-        hess_xy = (e + h*z)
-        hess_xz = (f + h*y)
-        hess_yz = (g + h*x)
+        hess_xy = e + h * z
+        hess_xz = f + h * y
+        hess_yz = g + h * x
         if grad_too:
-            grad_x = (b + e*y + f*z + h*y*z)
-            grad_y = (c + e*x + g*z + h*x*z)
-            grad_z = (d + f*x + g*y + h*x*y)
+            grad_x = b + e * y + f * z + h * y * z
+            grad_y = c + e * x + g * z + h * x * z
+            grad_z = d + f * x + g * y + h * x * y
             if evaluate_too:
-                evaluated = (a + b*x +c*y + d*z + e*x*y + f*x*z + g*y*z + h*x*y*z)
+                evaluated = (
+                    a
+                    + b * x
+                    + c * y
+                    + d * z
+                    + e * x * y
+                    + f * x * z
+                    + g * y * z
+                    + h * x * y * z
+                )
                 return [hess_xy, hess_xz, hess_yz], [grad_x, grad_y, grad_z], evaluated
             return [hess_xy, hess_xz, hess_yz], [grad_x, grad_y, grad_z]
         return [hess_xy, hess_xz, hess_yz]

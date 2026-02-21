@@ -1,20 +1,22 @@
 import numpy as np
 
+
 class LinearRegularGridInterpolator:
     """
     Linear grid interpolator : interpolate a 1D array between the indices using a linear (afine) method :
     F(x) = a + bx
     """
+
     def __init__(self):
         """
         Create the interpolator.
         """
         pass
-    
+
     def _get_corners(self, vector, i):
         i0, i1 = i, i + 1
-        l = vector[i0].astype('float')
-        m = vector[i1].astype('float')
+        l = vector[i0].astype("float")
+        m = vector[i1].astype("float")
         return (l, m)
 
     def _make_coefs(self, vector, i):
@@ -24,11 +26,11 @@ class LinearRegularGridInterpolator:
         return [a, b]
 
     def _get_inds_coords_axis(self, continuous_inds_axis, axis_size):
-        inds = continuous_inds_axis.astype('int')
+        inds = continuous_inds_axis.astype("int")
         np.clip(inds, a_min=0, a_max=(axis_size - 2), out=inds)
         coords = continuous_inds_axis - inds
         return inds, coords
-    
+
     def _get_inds_coords(self, shape, continuous_inds):
         return self._get_inds_coords_axis(continuous_inds, shape)
 
@@ -52,7 +54,7 @@ class LinearRegularGridInterpolator:
         """
         (i, x) = self._get_inds_coords(vector.size, continuous_inds)
         [a, b] = self._make_coefs(vector, i)
-        evaluated = (a + b*x)
+        evaluated = a + b * x
         return evaluated
 
     def grad(self, vector, continuous_inds, evaluate_too=False):
@@ -77,9 +79,9 @@ class LinearRegularGridInterpolator:
         """
         (i, x) = self._get_inds_coords(vector.size, continuous_inds)
         [a, b] = self._make_coefs(vector, i)
-        grad_x = (b)
+        grad_x = b
         if evaluate_too:
-            evaluated = (a + b*x)
+            evaluated = a + b * x
             return [grad_x], evaluated
         return [grad_x]
 
@@ -107,7 +109,9 @@ class LinearRegularGridInterpolator:
         """
         if grad_too:
             if evaluate_too:
-                [grad_x], evaluated = self.grad(vector, continuous_inds, evaluate_too=True)
+                [grad_x], evaluated = self.grad(
+                    vector, continuous_inds, evaluate_too=True
+                )
                 return [], [grad_x], evaluated
             [grad_x] = self.grad(vector, continuous_inds)
             return [], [grad_x]

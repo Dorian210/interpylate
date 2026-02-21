@@ -1,0 +1,69 @@
+MODULE: interpylate.TriLinearRegularGridInterpolator
+====================================================
+Documentation for module interpylate.TriLinearRegularGridInterpolator
+
+CLASS: TriLinearRegularGridInterpolator
+----------------------------------------
+Tri-linear grid interpolator : interpolate a 3D array between the indices using a tri-linear method :
+F(x, y, z) = a + bx + cy + dz + exy + fxz + gyz + hxyz
+
+  >>> __init__(self)
+      Create the interpolator.
+
+  >>> evaluate(self, volume, continuous_inds)
+      Evaluate the interpolation at the coordinates given as input.
+      
+      Parameters
+      ----------
+      volume : numpy.ndarray
+          The array to interpolate.
+      continuous_inds : numpy.ndarray of float
+          Coordinates where the interpolation is computed.
+          It's shape should be (3, n).
+      
+      Returns
+      -------
+      evaluated : numpy.ndarray of float
+          Interpolated values at the coordinates given.
+          If ``continuous_inds`` is of shape (3, n), the output will be of shape (n,).
+
+  >>> grad(self, volume, continuous_inds, evaluate_too=False)
+      Compute the gradient of the interpolated array.
+      
+      Parameters
+      ----------
+      volume : numpy.ndarray
+          The array to interpolate.
+      continuous_inds : numpy.ndarray of float
+          Coordinates where the gradient is computed.
+          It's shape should be (3, n).
+      evaluate_too : bool, optional
+          Set to True to evaluate on these points too, by default False
+      
+      Returns
+      -------
+      [grad_x, grad_y, grad_z] : list of numpy.ndarray of float
+          The derivative of the interpolated array in each axis's direction.
+          If ``continuous_inds`` is of shape (3, n), each of the output will be of shape (n,).
+
+  >>> hess(self, volume, continuous_inds, grad_too=False, evaluate_too=False)
+      Compute the hessian of the interpolated array.
+      
+      Parameters
+      ----------
+      volume : numpy.ndarray
+          The array to interpolate.
+      continuous_inds : numpy.ndarray of float
+          Coordinates where the hessian is computed.
+          It's shape should be (3, n).
+      grad_too : bool, optional
+          Set to True to compute the gradient on these points too, by default False
+      evaluate_too : bool, optional
+          Set to True to evaluate on these points too, by default False
+      
+      Returns
+      -------
+      [hess_xy, hess_xz, hess_yz] : list of numpy.ndarray of float
+          The second order derivatives of the interpolated array in each axis couple's direction.
+          If ``continuous_inds`` is of shape (3, n), each of the output will be of shape (n,).
+

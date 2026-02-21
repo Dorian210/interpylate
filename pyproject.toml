@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "interpylate"
+version = "1.0.1"
+description = "A package for N-linear regular grid interpolation"
+readme = "README.md"
+requires-python = ">=3.9"
+
+authors = [
+    { name = "Dorian Bichet", email = "dbichet@insa-toulouse.fr" }
+]
+
+license = "CECILL-2.1"
+
+dependencies = [
+    "numpy>=1.20",
+    "numba>=0.55"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+    "Intended Audience :: Science/Research"
+]
+
+[project.urls]
+Homepage = "https://github.com/Dorian210/interpylate"
+Repository = "https://github.com/Dorian210/interpylate"
+Issues = "https://github.com/Dorian210/interpylate/issues"
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "twine",
+    "pytest"
+]
+docs = [
+    "wkhtmltopdf",
+    "pdoc>=12.0"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

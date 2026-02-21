@@ -1,22 +1,24 @@
 import numpy as np
 
+
 class BiLinearRegularGridInterpolator:
     """
     Bi-linear grid interpolator : interpolate a 2D array between the indices using a bi-linear method :
     F(x, y) = a + bx + cy + dxy
     """
+
     def __init__(self):
         """
         Create the interpolator.
         """
         pass
-    
+
     def _get_corners(self, image, i, j):
         i0, j0, i1, j1 = i, j, i + 1, j + 1
-        l = image[i0, j0].astype('float')
-        m = image[i1, j0].astype('float')
-        n = image[i0, j1].astype('float')
-        o = image[i1, j1].astype('float')
+        l = image[i0, j0].astype("float")
+        m = image[i1, j0].astype("float")
+        n = image[i0, j1].astype("float")
+        o = image[i1, j1].astype("float")
         return (l, m, n, o)
 
     def _make_coefs(self, image, i, j):
@@ -28,16 +30,18 @@ class BiLinearRegularGridInterpolator:
         return [a, b, c, d]
 
     def _get_inds_coords_axis(self, continuous_inds_axis, axis_size):
-        inds = continuous_inds_axis.astype('int')
+        inds = continuous_inds_axis.astype("int")
         np.clip(inds, a_min=0, a_max=(axis_size - 2), out=inds)
         coords = continuous_inds_axis - inds
         return inds, coords
 
     def _get_inds_coords(self, shape, continuous_inds):
-        inds = np.empty(continuous_inds.shape, dtype='int')
-        coords = np.empty(continuous_inds.shape, dtype='float')
+        inds = np.empty(continuous_inds.shape, dtype="int")
+        coords = np.empty(continuous_inds.shape, dtype="float")
         for axis in range(2):
-            inds[axis], coords[axis] = self._get_inds_coords_axis(continuous_inds[axis], shape[axis])
+            inds[axis], coords[axis] = self._get_inds_coords_axis(
+                continuous_inds[axis], shape[axis]
+            )
         return inds, coords
 
     def evaluate(self, image, continuous_inds):
@@ -60,7 +64,7 @@ class BiLinearRegularGridInterpolator:
         """
         ([i, j], [x, y]) = self._get_inds_coords(image.shape, continuous_inds)
         [a, b, c, d] = self._make_coefs(image, i, j)
-        evaluated = (a + b*x +c*y + d*x*y)
+        evaluated = a + b * x + c * y + d * x * y
         return evaluated
 
     def grad(self, image, continuous_inds, evaluate_too=False):
@@ -85,10 +89,10 @@ class BiLinearRegularGridInterpolator:
         """
         ([i, j], [x, y]) = self._get_inds_coords(image.shape, continuous_inds)
         [a, b, c, d] = self._make_coefs(image, i, j)
-        grad_x = (b + d*y)
-        grad_y = (c + d*x)
+        grad_x = b + d * y
+        grad_y = c + d * x
         if evaluate_too:
-            evaluated = (a + b*x +c*y + d*x*y)
+            evaluated = a + b * x + c * y + d * x * y
             return [grad_x, grad_y], evaluated
         return [grad_x, grad_y]
 
@@ -116,12 +120,12 @@ class BiLinearRegularGridInterpolator:
         """
         ([i, j], [x, y]) = self._get_inds_coords(image.shape, continuous_inds)
         [a, b, c, d] = self._make_coefs(image, i, j)
-        hess_xy = (d)
+        hess_xy = d
         if grad_too:
-            grad_x = (b + d*y)
-            grad_y = (c + d*x)
+            grad_x = b + d * y
+            grad_y = c + d * x
             if evaluate_too:
-                evaluated = (a + b*x +c*y + d*x*y)
+                evaluated = a + b * x + c * y + d * x * y
                 return [hess_xy], [grad_x, grad_y], evaluated
             return [hess_xy], [grad_x, grad_y]
         return [hess_xy]

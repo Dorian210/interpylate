@@ -1,0 +1,110 @@
+================================================================
+FULL API DOCUMENTATION: INTERPYLATE
+================================================================
+
+
+
+MODULE: interpylate
+===================
+.. include:: ../../README.md
+
+################################################################
+MODULE: interpylate.BiLinearRegularGridInterpolator
+===================================================
+Documentation for module interpylate.BiLinearRegularGridInterpolator
+
+CLASS: BiLinearRegularGridInterpolator
+---------------------------------------
+Bi-linear grid interpolator : interpolate a 2D array between the indices using a bi-linear method :
+F(x, y) = a + bx + cy + dxy
+
+  >>> __init__(self)
+
+  >>> evaluate(self, image, continuous_inds)
+
+  >>> grad(self, image, continuous_inds, evaluate_too=False)
+
+  >>> hess(self, image, continuous_inds, grad_too=False, evaluate_too=False)
+
+
+################################################################
+MODULE: interpylate.LinearRegularGridInterpolator
+=================================================
+Documentation for module interpylate.LinearRegularGridInterpolator
+
+CLASS: LinearRegularGridInterpolator
+-------------------------------------
+Linear grid interpolator : interpolate a 1D array between the indices using a linear (afine) method :
+F(x) = a + bx
+
+  >>> __init__(self)
+
+  >>> evaluate(self, vector, continuous_inds)
+
+  >>> grad(self, vector, continuous_inds, evaluate_too=False)
+
+  >>> hess(self, vector, continuous_inds, grad_too=False, evaluate_too=False)
+
+
+################################################################
+MODULE: interpylate.NLinearRegularGridInterpolator
+==================================================
+Documentation for module interpylate.NLinearRegularGridInterpolator
+
+CLASS: NLinearRegularGridInterpolator
+--------------------------------------
+N-linear grid interpolator : interpolate a ND array between the indices using a N-linear method.
+For exemple, for a 2D array, the interpolator finds a, b, c and d on each square of the grid such that
+F(x, y) = a + bx + cy + dxy
+
+  >>> __init__(self, dim)
+
+  >>> evaluate(self, NDarray, continuous_inds)
+
+  >>> grad(self, NDarray, continuous_inds, evaluate_too=False)
+
+  >>> hess(self, NDarray, continuous_inds, grad_too=False, evaluate_too=False)
+
+
+################################################################
+MODULE: interpylate.NLinearRegularGridInterpolatorLarge
+=======================================================
+Documentation for module interpylate.NLinearRegularGridInterpolatorLarge
+
+CLASS: NLinearRegularGridInterpolatorLarge
+-------------------------------------------
+N-linear grid interpolator : interpolate a ND array between the indices using a N-linear method.
+For N<4, consider using ``TriLinearRegularGridInterpolator``, ``BiLinearRegularGridInterpolator``,
+or ``LinearRegularGridInterpolator``.
+For exemple, for a 2D array, the interpolator finds a, b, c and d on each square of the grid such that
+F(x, y) = a + bx + cy + dxy
+
+  >>> __init__(self, dim)
+
+  >>> evaluate(self, NDarray, continuous_inds)
+
+  >>> grad(self, NDarray, continuous_inds, evaluate_too=False)
+
+  >>> hess(self, NDarray, continuous_inds, grad_too=False, evaluate_too=False)
+
+
+GLOBAL FUNCTIONS:
+~~~~~~~~~~~~~~~~~~
+################################################################
+MODULE: interpylate.TriLinearRegularGridInterpolator
+====================================================
+Documentation for module interpylate.TriLinearRegularGridInterpolator
+
+CLASS: TriLinearRegularGridInterpolator
+----------------------------------------
+Tri-linear grid interpolator : interpolate a 3D array between the indices using a tri-linear method :
+F(x, y, z) = a + bx + cy + dz + exy + fxz + gyz + hxyz
+
+  >>> __init__(self)
+
+  >>> evaluate(self, volume, continuous_inds)
+
+  >>> grad(self, volume, continuous_inds, evaluate_too=False)
+
+  >>> hess(self, volume, continuous_inds, grad_too=False, evaluate_too=False)
+

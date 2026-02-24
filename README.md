@@ -1,7 +1,7 @@
 # interpylate
 
 <p align="center">
-  <img src="docs/logo.png" width="500" />
+  <img src="https://raw.githubusercontent.com/Dorian210/interpylate/main/docs/logo.png" width="500" />
 </p>
 
 **interpylate** is a Python library for N-linear regular grid interpolation. It provides a flexible and efficient method to interpolate N-dimensional arrays using a N-linear approach, making it particularly useful for image interpolation and its higher-dimensional equivalents.

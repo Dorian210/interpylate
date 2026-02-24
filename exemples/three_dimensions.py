@@ -23,8 +23,8 @@ continuous_inds = np.array([X_new.flatten(), Y_new.flatten(), Z_new.flatten()])
 
 # Compute the interpolation at specified continuous indices
 evaluated = interpolator.evaluate(dataset, continuous_inds)
-gradx, grady, gradz = interpolator.grad(dataset, continuous_inds)
-hessxy, hessxz, hessyz = interpolator.hess(dataset, continuous_inds)
+gradx, grady, gradz = interpolator.grad(dataset, continuous_inds)  # type: ignore
+hessxy, hessxz, hessyz = interpolator.hess(dataset, continuous_inds)  # type: ignore
 
 # Plot the results
 fig, axs = plt.subplots(4, 3, figsize=(10, 12), subplot_kw={"projection": "3d"})
@@ -42,31 +42,31 @@ axs[1, 0].axis("off")
 axs[1, 0].set_title("Interpolated Dataset")
 
 # Gradient in x-direction
-im3 = axs[2, 0].scatter(X_new, Y_new, Z_new, c=gradx.reshape(X_new.shape))
+im3 = axs[2, 0].scatter(X_new, Y_new, Z_new, c=gradx.reshape(X_new.shape))  # type: ignore
 plt.colorbar(im3, ax=axs[2, 0])
 axs[2, 0].axis("off")
 axs[2, 0].set_title("Gradient (x-direction)")
 
 # Gradient in y-direction
-im4 = axs[2, 1].scatter(X_new, Y_new, Z_new, c=grady.reshape(X_new.shape))
+im4 = axs[2, 1].scatter(X_new, Y_new, Z_new, c=grady.reshape(X_new.shape))  # type: ignore
 plt.colorbar(im4, ax=axs[2, 1])
 axs[2, 1].axis("off")
 axs[2, 1].set_title("Gradient (y-direction)")
 
 # Gradient in z-direction
-im5 = axs[2, 2].scatter(X_new, Y_new, Z_new, c=gradz.reshape(X_new.shape))
+im5 = axs[2, 2].scatter(X_new, Y_new, Z_new, c=gradz.reshape(X_new.shape))  # type: ignore
 plt.colorbar(im5, ax=axs[2, 2])
 axs[2, 2].axis("off")
 axs[2, 2].set_title("Gradient (z-direction)")
 
 # Hessian in xy-direction
-im6 = axs[3, 0].scatter(X_new, Y_new, Z_new, c=hessxy.reshape(X_new.shape))
+im6 = axs[3, 0].scatter(X_new, Y_new, Z_new, c=hessxy.reshape(X_new.shape))  # type: ignore
 plt.colorbar(im6, ax=axs[3, 0])
 axs[3, 0].axis("off")
 axs[3, 0].set_title("Hessian (xy-direction)")
 
 # Hessian in xz-direction
-im7 = axs[3, 1].scatter(X_new, Y_new, Z_new, c=hessxz.reshape(X_new.shape))
+im7 = axs[3, 1].scatter(X_new, Y_new, Z_new, c=hessxz.reshape(X_new.shape))  # type: ignore
 plt.colorbar(im7, ax=axs[3, 1])
 axs[3, 1].axis("off")
 axs[3, 1].set_title("Hessian (xz-direction)")

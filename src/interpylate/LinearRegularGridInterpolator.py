@@ -113,6 +113,6 @@ class LinearRegularGridInterpolator:
                     vector, continuous_inds, evaluate_too=True
                 )
                 return [], [grad_x], evaluated
-            [grad_x] = self.grad(vector, continuous_inds)
+            grad_x = self.grad(vector, continuous_inds)[0]
             return [], [grad_x]
         return []

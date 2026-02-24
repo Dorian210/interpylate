@@ -57,20 +57,20 @@ class NLinearRegularGridInterpolatorLarge:
         coefs = self.mat @ corners
         return coefs
 
-    def _get_inds_coords(self, shape, continuous_inds):
-        inds = continuous_inds.astype("int")
-        mask_negative = inds < 0
-        inds[mask_negative] = 0
-        outside = mask_negative.any()
-        for axis in range(self.dim):
-            max_size = shape[axis] - 2
-            mask_too_large = inds[axis] > max_size
-            inds[axis, mask_too_large] = max_size
-            outside = outside or mask_too_large.any()
-        if outside:
-            warnings.warn("Interpolate outside of the array !")
-        coords = continuous_inds - inds
-        return inds, coords
+    # def _get_inds_coords(self, shape, continuous_inds):
+    #     inds = continuous_inds.astype("int")
+    #     mask_negative = inds < 0
+    #     inds[mask_negative] = 0
+    #     outside = mask_negative.any()
+    #     for axis in range(self.dim):
+    #         max_size = shape[axis] - 2
+    #         mask_too_large = inds[axis] > max_size
+    #         inds[axis, mask_too_large] = max_size
+    #         outside = outside or mask_too_large.any()
+    #     if outside:
+    #         warnings.warn("Interpolate outside of the array !")
+    #     coords = continuous_inds - inds
+    #     return inds, coords
 
     def _get_inds_coords_axis(self, continuous_inds_axis, axis_size):
         inds = continuous_inds_axis.astype("int")
@@ -141,12 +141,12 @@ class NLinearRegularGridInterpolatorLarge:
         coefs = self._make_coefs(NDarray, inds)
         coef_inds = np.arange(self.nb_coefs)
         masks = self.masks
-        grad = [None] * self.dim
+        grad = []
         for axis in range(self.dim):
             new_masks, new_coef_inds = self._change_masks_and_coef_inds_by_deriving(
                 masks, coef_inds, axis
             )
-            grad[axis] = _evaluate(coords, new_masks, coefs[new_coef_inds])
+            grad.append(_evaluate(coords, new_masks, coefs[new_coef_inds]))
         if evaluate_too:
             evaluated = _evaluate(coords, self.masks, coefs)
             return grad, evaluated
@@ -180,7 +180,7 @@ class NLinearRegularGridInterpolatorLarge:
         masks = self.masks
         hess = []
         if grad_too:
-            grad = [None] * self.dim
+            grad = []
         for axis1 in range(self.dim):
             new1_masks, new1_coef_inds = self._change_masks_and_coef_inds_by_deriving(
                 masks, coef_inds, axis1
@@ -193,12 +193,12 @@ class NLinearRegularGridInterpolatorLarge:
                 )
                 hess.append(_evaluate(coords, new2_masks, coefs[new2_coef_inds]))
             if grad_too:
-                grad[axis1] = _evaluate(coords, new1_masks, coefs[new1_coef_inds])
+                grad.append(_evaluate(coords, new1_masks, coefs[new1_coef_inds]))  # type: ignore
         if grad_too:
             if evaluate_too:
                 evaluated = _evaluate(coords, self.masks, coefs)
-                return hess, grad, evaluated
-            return hess, grad
+                return hess, grad, evaluated  # type: ignore
+            return hess, grad  # type: ignore
         return hess
 
 
